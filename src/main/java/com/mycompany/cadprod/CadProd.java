@@ -64,6 +64,7 @@ public class CadProd {
         final int MAX_TENTATIVAS = 3;
         String nome;
         String cpf;
+        
         while (cadastroCompleto == false || tentativas <= MAX_TENTATIVAS) {
             nome = JOptionPane.showInputDialog("Digite o nome do cliente");
             if(nome == null) return;
@@ -81,9 +82,9 @@ public class CadProd {
             Cliente tempCliente = new Cliente(nome, cpf);
             
             
-            if (tempCliente.getCpf() == null) {
+            if (tempCliente.getCpf() == null || tempCliente.getCpf().equals("") || tentativas <= MAX_TENTATIVAS) {
                 JOptionPane.showMessageDialog(null, 
-                    "CPF inválido! Deve conter 11 dígitos. \nTentativas restantes: " + (MAX_TENTATIVAS - tentativas - 1));
+                    "CPF inválido! Deve conter 11 dígitos. \nTentativas restantes: " + (MAX_TENTATIVAS - tentativas));
                 tentativas++;
             } else {
                 // Verifica se CPF já existe
@@ -112,16 +113,32 @@ public class CadProd {
         int id;
         double preco;
         
-        String escolherID = JOptionPane.showInputDialog("Digite o ID do produto");
-        String nome = JOptionPane.showInputDialog("Digite o nome do produto");
-        String escolherPreco = JOptionPane.showInputDialog("Digite o preco do produto");
+        boolean cadastroCompleto = false;
         
-        //AINDA NAO CRIEI UM SISTEMA DE VALIDACAO DE STIRNG PARA NUMEROSSSSSSSSSSSSSSS
-        id = Integer.parseInt(escolherID);
-        preco = Double.parseDouble(escolherPreco);
-        
-        Produto produto = new Produto(id, nome, preco);
-        loja.adicionarProdutos(produto);
+        while (cadastroCompleto == false) {
+            //Se o ID for nulo ou nao for inteiramente em inteiro ele para
+            String escolherID = JOptionPane.showInputDialog("Digite o ID do produto");
+            if (escolherID == null || !escolherID.matches("^\\d+$")) {
+                JOptionPane.showMessageDialog(null, "ID inválido!");
+                break;
+            }
+            
+            String nome = JOptionPane.showInputDialog("Digite o nome do produto");
+            
+            String escolherPreco = JOptionPane.showInputDialog("Digite o preco do produto");
+            if (escolherPreco == null || !escolherPreco.matches("^\\d+$")) {
+                JOptionPane.showMessageDialog(null, "Preço inválido!");
+                break;
+            }
+            
+            id = Integer.parseInt(escolherID);
+            preco = Double.parseDouble(escolherPreco);
+            
+            Produto tempProduto = new Produto(id, nome, preco);
+            
+            loja.adicionarProdutos(tempProduto);
+            cadastroCompleto = true;
+        }
     }
     
     private static void realizarVendas() {

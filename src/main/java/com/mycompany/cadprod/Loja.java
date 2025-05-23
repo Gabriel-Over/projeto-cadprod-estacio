@@ -50,8 +50,15 @@ public class Loja {
     
     public String listarProdutos() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numeroProdutos; i++) {
-            sb.append(produtos[i].toString()).append("\n");
+        int produtoNum = 1;
+        for(Produto p : produtos) {
+            if(p != null) {
+                sb.append("Produto ").append(produtoNum).append(" - ").append(p.getNome())
+                .append(": R$").append(p.getPreço())
+                .append(", ID: ").append(p.getId())
+                .append("\n");
+                produtoNum++;
+            }
         }
         return sb.toString();
     }
